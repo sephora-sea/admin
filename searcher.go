@@ -361,7 +361,7 @@ func filterResourceByFields(res *Resource, filterFields []filterField, keyword s
 			appendString := func(field *gorm.Field) {
 				switch filterfield.Operation {
 				case "equal", "eq":
-					conditions = append(conditions, fmt.Sprintf("upper(%v.%v) = upper(?)", tableName, scope.Quote(field.DBName)))
+					conditions = append(conditions, fmt.Sprintf("%v.%v = ?", tableName, scope.Quote(field.DBName)))
 					keywords = append(keywords, keyword)
 				case "start_with":
 					conditions = append(conditions, fmt.Sprintf("upper(%v.%v) like upper(?)", tableName, scope.Quote(field.DBName)))
@@ -376,8 +376,8 @@ func filterResourceByFields(res *Resource, filterFields []filterField, keyword s
 					conditions = append(conditions, fmt.Sprintf("%v.%v = ? OR %v.%v IS NULL", tableName, scope.Quote(field.DBName), tableName, scope.Quote(field.DBName)))
 					keywords = append(keywords, "")
 				default:
-					conditions = append(conditions, fmt.Sprintf("%v.%v ilike ?", tableName, scope.Quote(field.DBName)))
-					keywords = append(keywords, "%"+keyword+"%")
+					conditions = append(conditions, fmt.Sprintf("%v.%v = ?", tableName, scope.Quote(field.DBName)))
+					keywords = append(keywords, keyword)
 				}
 			}
 
