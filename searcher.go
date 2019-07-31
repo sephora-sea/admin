@@ -377,7 +377,7 @@ func filterResourceByFields(res *Resource, filterFields []filterField, keyword s
 					keywords = append(keywords, "")
 				default:
 					conditions = append(conditions, fmt.Sprintf("%v.%v = ?", tableName, scope.Quote(field.DBName)))
-					keywords = append(keywords, "%"+keyword+"%")
+					keywords = append(keywords, keyword)
 				}
 			}
 
