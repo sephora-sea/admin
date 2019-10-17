@@ -36,13 +36,13 @@ type Resource struct {
 	ParentResource *Resource
 	SearchHandler  func(keyword string, context *qor.Context) *gorm.DB
 
-	params  string
-	admin   *Admin
-	metas   []*Meta
-	actions []*Action
-	scopes  []*Scope
-	filters []*Filter
-	mounted bool
+	params   string
+	admin    *Admin
+	metas    []*Meta
+	actions  []*Action
+	scopes   []*Scope
+	filters  []*Filter
+	mounted  bool
 	sections struct {
 		IndexSections                  []*Section
 		OverriddingIndexAttrs          bool
@@ -222,7 +222,9 @@ func (res *Resource) setupParentResource(fieldName string, parent *Resource) {
 		parentValue := parent.NewStruct()
 		if parentValue, err = findParent(context); err == nil {
 			if _, ok := context.GetDB().Get("qor:getting_total_count"); ok {
+				fmt.Println("TRYING TO COUNT!!")
 				*(value.(*int)) = context.GetDB().Model(parentValue).Association(fieldName).Count()
+				fmt.Printf("Count complete %v\n", value)
 				return nil
 			}
 			return context.GetDB().Model(parentValue).Association(fieldName).Find(value).Error
